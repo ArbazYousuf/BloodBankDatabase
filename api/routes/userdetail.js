@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 
 router.get("/:id", (req, res, next) => {
   console.log(req.params.id)
-  UserData.findOne({ userId: req.params.id }).then((docs) => {
+  UserData.findById({ userId: req.params.id }).then((docs) => {
     if (docs !== null) {
       res.status(200).json(docs);
     } else {
@@ -61,7 +61,6 @@ router.post("/", (req, res) => {
   // res.json({Message: "chal to rha hy  "})
   let userData = {
     _id: new mongoose.Types.ObjectId(),
-    email: req.body.email,
     name: req.body.name,
     contactNumber: req.body.contactNumber,
     bloodGroup: req.body.bloodGroup,
@@ -73,15 +72,18 @@ router.post("/", (req, res) => {
     created: today
   }
   UserData.findOne({
-    email: req.body.email
+    userId: req.body.userId
   }).then((user) => {
     if (!user) {
+      console.log("no user")
       UserData.create(userData)
         .then(suc => {
           res.status(200).json({ status: 200, message: "succesfully added", users: suc })
         })
         .catch(err => res.send("error " + err));
     } else {
+      console.log("there is user")
+
       res.status(201).json({ error: "user data exists", status: 201 });
     }
   })

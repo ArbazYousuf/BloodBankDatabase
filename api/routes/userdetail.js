@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 
 router.get("/:id", (req, res, next) => {
   console.log(req.params.id)
-  UserData.findById({ userId: req.params.id }).then((docs) => {
+  UserData.findOne({ userId: req.params.id }).then((docs) => {
     if (docs !== null) {
       res.status(200).json(docs);
     } else {
